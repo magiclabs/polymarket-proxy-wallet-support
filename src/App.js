@@ -33,6 +33,7 @@ const erc20TransferTransaction = (
 
 export default function App() {
     const [email, setEmail] = useState("");
+    const [proxyWalletAddress, setProxyWalletAddress] = useState("");
     const [publicAddress, setPublicAddress] = useState("");
     const [destinationAddress, setDestinationAddress] = useState("");
     const [sendAmount, setSendAmount] = useState(0);
@@ -48,16 +49,19 @@ export default function App() {
             if (magicIsLoggedIn) {
                 const { publicAddress } = await magic.user.getMetadata();
 
+                const proxyAddress = getProxyWalletAddress(PROXY_WALLET_FACTORY_ADDRESS, publicAddress);
+
                 const web3 = new Web3(magic.rpcProvider);
 
                 const erc20Contract = new web3.eth.Contract(ERC20ABI, TEST_TOKEN_ADDRESS);
 
-                const erc20Balance = await erc20Contract.methods.balanceOf(publicAddress).call();
+                const erc20Balance = await erc20Contract.methods.balanceOf(proxyAddress).call();
 
                 const ethUSDTBalance = Web3.utils.fromWei(erc20Balance, 'ether');
 
-                setUSDCBalance(ethUSDTBalance);
                 setPublicAddress(publicAddress);
+                setUSDCBalance(ethUSDTBalance);
+                setProxyWalletAddress(proxyAddress);
                 setUserMetadata(await magic.user.getMetadata());
             }
         });
@@ -75,7 +79,6 @@ export default function App() {
 
     const handleSendUSDC = async () => {
         const web3 = new Web3(magic.rpcProvider);
-        const proxyWalletAddress = await getProxyWalletAddress(TEST_TOKEN_ADDRESS, publicAddress);
         const proxyWalletFactory = new web3.eth.Contract(proxyWalletFactoryABI, PROXY_WALLET_FACTORY_ADDRESS);
 
         const transferAmount = web3.utils.toWei(sendAmount, 'ether');
@@ -86,15 +89,12 @@ export default function App() {
             transferAmount,
         );
 
-        erc20Transaction.from = publicAddress;
-
         const tx = await proxyWalletFactory.methods.proxy([
             erc20Transaction,
         ]).send({from: publicAddress});
 
-        // console.log('txn', tx.txHash);
-        //
-        // setTxHash(tx.txHash)
+        console.log('txn', tx.txHash);
+        setTxHash(tx.txHash)
     };
 
     return (
@@ -120,7 +120,13 @@ export default function App() {
                         <button onClick={logout}>Logout</button>
                     </div>
                     <div className="container">
-                        <h1>public address</h1>
+                        <h1>Proxy Wallet Address</h1>
+                        <div className="info">
+                            {proxyWalletAddress}
+                        </div>
+                    </div>
+                    <div className="container">
+                        <h1>Public Address</h1>
                         <div className="info">
                             {publicAddress}
                         </div>
