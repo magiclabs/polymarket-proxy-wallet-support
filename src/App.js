@@ -7,14 +7,13 @@ import ERC20ABI from "./ERC20";
 import proxyWalletFactoryABI from './ProxyWalletFactoryABI'
 import {getProxyWalletAddress} from '@polymarket/sdk'
 
-const magic = new Magic('pk_live_DCEE325C6958B804', {
-    endpoint: 'http://localhost:3014/',
+const magic = new Magic('pk_live_99ABD23F9F1C8266', {
     network: {
-        rpcUrl: 'https://rpc-mumbai.maticvigil.com'
+        rpcUrl: 'https://polygon-rpc.com/'
     }
 });
 
-const TEST_TOKEN_ADDRESS = '0x2d7882bedcbfddce29ba99965dd3cdf7fcb10a1e';
+const TEST_TOKEN_ADDRESS = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174';
 export const PROXY_WALLET_FACTORY_ADDRESS = '0xaB45c5A4B0c941a2F231C04C3f49182e1A254052';
 
 const encodeTokenTransfer = (recipientAddress, amount) =>
