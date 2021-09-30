@@ -56,7 +56,7 @@ export default function App() {
 
                 const erc20Balance = await erc20Contract.methods.balanceOf(proxyAddress).call();
 
-                const ethUSDTBalance = Web3.utils.fromWei(erc20Balance, 'micro');
+                const ethUSDTBalance = Web3.utils.fromWei(erc20Balance, 'mwei');
 
                 setPublicAddress(publicAddress);
                 setUSDCBalance(ethUSDTBalance);
@@ -80,7 +80,7 @@ export default function App() {
         const web3 = new Web3(magic.rpcProvider);
         const proxyWalletFactory = new web3.eth.Contract(proxyWalletFactoryABI, PROXY_WALLET_FACTORY_ADDRESS);
 
-        const transferAmount = web3.utils.toWei(sendAmount, 'micro');
+        const transferAmount = web3.utils.toWei(sendAmount, 'mwei');
 
         const erc20Transaction = erc20TransferTransaction(
             TEST_TOKEN_ADDRESS,
