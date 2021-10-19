@@ -131,13 +131,13 @@ export default function App() {
                         </div>
                     </div>
                     <div className="container">
-                        <h1>USDC balance</h1>
+                        <h1>USDC balance (Polygon)</h1>
                         <div className="info">
                             {USDCBalance}
                         </div>
                     </div>
                     <div className="container">
-                        <h1>Send Transaction</h1>
+                        <h1>Send Transaction (Polygon)</h1>
                         {txHash ? (
                             <div>
                                 <div>Send transaction success</div>
@@ -173,6 +173,9 @@ export default function App() {
                         <button id="btn-send-txn" onClick={handleSendUSDC}>
                             Send Transaction
                         </button>
+                    </div>
+                    <div className="container">
+                        <button><a href="https://reveal.magic.link/polymarket" target="_blank">Reveal Private Key</a></button>
                     </div>
                 </div>
 
